@@ -1,0 +1,89 @@
+// Algoritmo Dijkstra "Algoritmo para encontrar el caminino minimo en un Grafo
+
+#include <stdio.h>
+#include <limits.h>
+
+// Numero de vertices
+#define V 9
+
+
+// Funcion para buscar el vertice con la minima distancia
+
+int minDistance(int dist[], bool sptSet[])
+{
+   // Inicializa el valor min.
+   int min = INT_MAX, min_index;
+
+   for (int v = 0; v < V; v++)
+     if (sptSet[v] == false && dist[v] <= min)
+         min = dist[v], min_index = v;
+
+   return min_index;
+}
+
+// se imprime por pantalla el arreglo con la minima distancia
+
+int printSolution(int dist[], int n)
+{
+   printf("Vertex   Distance from Source\n");
+   for (int i = 0; i < V; i++)
+      printf("%d \t\t %d\n", i, dist[i]);
+}
+
+//Algoritmo para encontrar el camino mas corto
+
+void dijkstra(int graph[V][V], int src)
+{
+     int dist[V];     // Arreglo de salida.
+
+
+     bool sptSet[V];
+
+	// Se inicializa todas la distancias al Maximo
+
+     for (int i = 0; i < V; i++)
+        dist[i] = INT_MAX, sptSet[i] = false;
+
+	// LA distancia inicial es siempre de 0
+
+     dist[src] = 0;
+
+	// busca el camino mas corto del vertice
+
+     for (int count = 0; count < V-1; count++)
+     {
+
+       int u = minDistance(dist, sptSet);
+
+       sptSet[u] = true;
+       for (int v = 0; v < V; v++)
+
+         if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX
+                                       && dist[u]+graph[u][v] < dist[v])
+            dist[v] = dist[u] + graph[u][v];
+     }
+
+     	// se imprime por pantalla el arreglo que contiene las distancias
+
+     printSolution(dist, V);
+}
+
+// Funcion Principal
+int main()
+{
+   /* este es el grafo al que se quiere buscar el minimo caminio para las diferentes rutas */
+   int graph[V][V] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
+                      {4, 0, 8, 0, 0, 0, 0, 11, 0},
+                      {0, 8, 0, 7, 0, 4, 0, 0, 2},
+                      {0, 0, 7, 0, 9, 14, 0, 0, 0},
+                      {0, 0, 0, 9, 0, 10, 0, 0, 0},
+                      {0, 0, 4, 14, 10, 0, 2, 0, 0},
+                      {0, 0, 0, 0, 0, 2, 0, 1, 6},
+                      {8, 11, 0, 0, 0, 0, 1, 0, 7},
+                      {0, 0, 2, 0, 0, 0, 6, 7, 0}
+                     };
+
+    dijkstra(graph, 0);
+
+    return 0;
+}
