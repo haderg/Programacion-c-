@@ -1,0 +1,101 @@
+#include <stdio.h>
+
+void display(int arr[], int size);
+void displayout(int arr[], int size);
+void heapSort(int arr[], int size);
+void minHeap(int arr[], int size);
+
+int main() {
+	int h,N,M;
+		printf("\nIngrese la cantidad de Numeros  a organizar  por el metodo de  Heap Sort:\t "); scanf ("%d",&N);
+	printf("\n");
+      int arr[N+1] = {};
+       arr[0] =-1;
+           for(h = 1; h <=N; h++) {
+	printf("Ingrese el numero Real %i del vector a Organizar:\t",h); scanf ("%d",&M);
+                arr[h]=M;
+            }
+
+
+	// se reserva memoria para el tamaño del arreglo
+
+	int n = sizeof(arr)/sizeof(arr[0]);
+
+	// se muestra en pantalla el array ingresado para organizar
+
+	display(arr, n);
+
+	//sort the elements
+	heapSort(arr, n);
+
+	// se muestra en pantalla el array organizado
+	displayout(arr, n);
+
+	return 0;
+}
+
+void display(int arr[], int size) {
+	int i;
+	printf("\n Vector de Entrada \n");
+	for(i = 1; i < size; i++) {
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+}
+
+void displayout(int arr[], int size) {
+	int i;
+	printf("\n Vector Orenado por el Metodo Heap Sort \n");
+	for(i = 1; i < size; i++) {
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+}
+void heapSort(int arr[], int size) {
+	//variables
+	int i, j, tmp, sorted[size];
+	sorted[0] = -1;
+
+	//Algoritmo sort
+	for(i = size , j = 1; i >= 1; i--, j++) {
+		minHeap(arr, i);
+		sorted[j] = arr[1];
+		arr[1] = arr[i - 1];
+	}
+
+	//set the result
+	for(i = 0; i < size; i++) {
+		arr[i] = sorted[i];
+	}
+}
+
+void minHeap(int arr[], int size) {
+	int i, left, right, tmp, val;
+
+	for(i = size / 2; i >= 1; i--) {
+
+		//taking 1 as the start index
+		//if parent node = i
+		//so left child = 2i
+		//and right child = 2i+1
+		tmp = i;
+		left = (2 * i);
+		right = (2 * i) + 1;
+
+		if(left < size && arr[left] < arr[tmp]) {
+			tmp = left;
+		}
+
+		if(right < size && arr[right] < arr[tmp]) {
+			tmp = right;
+		}
+
+		if(tmp != i) {
+			val = arr[i];
+			arr[i] = arr[tmp];
+			arr[tmp] = val;
+			minHeap(arr, size);
+		}
+	}
+}
+
